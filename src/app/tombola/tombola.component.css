@@ -1,0 +1,19 @@
+/* .circle{
+    border: solid;
+    border-color: grey;
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
+
+
+}
+
+.texto{
+    text-align: center;
+    vertical-align: middle;
+} */
+
+.tombola-container {
+  position: relative;
+}
+

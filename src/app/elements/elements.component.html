@@ -1,0 +1,70 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-6">
+
+            <form [formGroup]="elementsForm" (ngSubmit)="addElement()" class="mb-3">
+
+                <input id="inputDescription" type="text" formControlName="inputDescription" placeholder="Add Something"
+                    maxlength="50">
+
+                <button type="submit" class="btn btn-primary ms-3" [disabled]="!elementsForm.valid"> <i
+                        class="bi bi-plus-circle" style="font-size:larger; cursor: pointer; color: white"></i> </button>
+
+            </form>
+
+
+            <table class="table">
+                <tbody>
+                    <tr class="table-row" *ngFor="let elem of winnerService.elements; index as i">
+                        <td [width]="270" [style.background-color]="elem.color"
+                            style="color: white; font-weight: bolder; font-style: oblique;">
+                            {{elem.description}}
+                        </td>
+                        <!-- <td>{{elem.id}}</td> -->
+
+                        <td [width]="5" [style.color]="elem.color" style="border: none;">
+                            <a class="ms-3" (click)="removeElement(i)" style="cursor: pointer; color: #0d6efd"> <i
+                                    class="bi bi-dash-circle" style="font-size:larger"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Previous Winners</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-row" *ngFor="let winner of winnerService.elementsWinners">
+                        <td [width]="270" [style.background-color]="winner.color"
+                            style="color: white; font-weight: bolder; font-style: oblique;">
+                            {{winner.description}}
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+
+        </div>
+        <div class="col-6">
+            <app-tombola [elements]="winnerService.elements" [rotationActive]="rotationActive" class="tombola"></app-tombola>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2 offset-2">
+            <button class="btn btn-outline-info btn-lg mt-5 custom-btn" (click)="onReset()">Reset</button>
+        </div>
+
+
+        <div class="col-2 offset-1">
+            <button class="btn btn-outline-info btn-lg mt-5 custom-btn" (click)="onStart()">Start!</button>
+        </div>
+
+
+
+    </div>
+</div>

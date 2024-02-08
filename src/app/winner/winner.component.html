@@ -1,0 +1,21 @@
+<div class="container mt-5">
+
+    <h1>And the winner is...</h1>
+    <br>
+    
+    <div [@slideInOut] class="mt-5">
+        <button #spareButton style="border: none; background-color: transparent;" (click)="showConfetti($event.target);">
+            <h1  [ngStyle]="{ 'color': winnerService.winnerElement.color}" style="font-size: 150px">
+            {{winnerService.winnerElement.description}}
+        </h1></button>
+    </div>
+
+    <div class="row">
+        <div class="col-2 offset-4">
+            
+            <button class="btn btn-outline-info btn-lg mt-5 custom-btn" (click)="navigateToHome()">Continue Rouletting</button>
+        </div>
+
+    </div>
+
+</div>

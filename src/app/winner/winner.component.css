@@ -1,0 +1,12 @@
+@keyframes aumentarTamanio {
+    from {
+      font-size: 16px; /* Tamaño inicial */
+    }
+    to {
+      font-size: 64px; /* Tamaño final */
+    }
+  }
+  
+  .texto-aumentar-tamanio {
+    animation: aumentarTamanio 1s ease-in-out; /* Duración y tipo de animación */
+  }
