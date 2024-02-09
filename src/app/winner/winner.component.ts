@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { WinnerService } from './winner.service';
-// import * as confetti from 'canvas-confetti';
 
 import party from "party-js";
 import { trigger, transition, style, animate } from '@angular/animations';

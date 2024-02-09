@@ -1,17 +1,12 @@
 <div class="container mt-5">
     <div class="row">
-        <div class="col-6">
-
+        <div class="col-lg-6">
             <form [formGroup]="elementsForm" (ngSubmit)="addElement()" class="mb-3">
-
                 <input id="inputDescription" type="text" formControlName="inputDescription" placeholder="Add Something"
                     maxlength="50">
-
                 <button type="submit" class="btn btn-primary ms-3" [disabled]="!elementsForm.valid"> <i
                         class="bi bi-plus-circle" style="font-size:larger; cursor: pointer; color: white"></i> </button>
-
             </form>
-
 
             <table class="table">
                 <tbody>
@@ -20,8 +15,6 @@
                             style="color: white; font-weight: bolder; font-style: oblique;">
                             {{elem.description}}
                         </td>
-                        <!-- <td>{{elem.id}}</td> -->
-
                         <td [width]="5" [style.color]="elem.color" style="border: none;">
                             <a class="ms-3" (click)="removeElement(i)" style="cursor: pointer; color: #0d6efd"> <i
                                     class="bi bi-dash-circle" style="font-size:larger"></i></a>
@@ -29,7 +22,6 @@
                     </tr>
                 </tbody>
             </table>
-
             <table class="table">
                 <thead>
                     <tr>
@@ -44,27 +36,23 @@
                         </td>
                     </tr>
                 </tbody>
-
             </table>
-
-
         </div>
-        <div class="col-6">
+        <div class="col-lg-6">
             <app-tombola [elements]="winnerService.elements" [rotationActive]="rotationActive" class="tombola"></app-tombola>
         </div>
     </div>
 
     <div class="row">
         <div class="col-2 offset-2">
-            <button class="btn btn-outline-info btn-lg mt-5 custom-btn" (click)="onReset()">Reset</button>
+            <button class="btn btn-outline-info mt-5" 
+            [ngClass]="{'btn-md': smallScreen, 'custom-btn-sm': smallScreen, 'btn-lg': !smallScreen, 'custom-btn-lg': !smallScreen}"
+             (click)="onReset()">Reset</button>
         </div>
-
-
         <div class="col-2 offset-1">
-            <button class="btn btn-outline-info btn-lg mt-5 custom-btn" (click)="onStart()">Start!</button>
+            <button class="btn btn-outline-info mt-5"
+            [ngClass]="{'btn-md': smallScreen, 'custom-btn-sm': smallScreen, 'btn-lg': !smallScreen, 'custom-btn-lg': !smallScreen}"
+              (click)="onStart()">Start!</button>
         </div>
-
-
-
     </div>
 </div>

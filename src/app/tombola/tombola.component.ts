@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, OnChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { WinnerService } from '../winner/winner.service';
+import { ScreenWidthEnum } from '../shared/screen-width-enum';
 
 @Component({
   selector: 'app-tombola',
@@ -9,7 +10,9 @@ import { WinnerService } from '../winner/winner.service';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class TombolaComponent implements OnChanges {
+
   @ViewChild('micanvas', { static: true }) micanvas?: ElementRef<HTMLCanvasElement>;
+
   private _elements: any[] = [];
   private ctx: CanvasRenderingContext2D | null = null;
   private _rotationActive: boolean = false;
@@ -17,7 +20,23 @@ export class TombolaComponent implements OnChanges {
   private totalRotationTime = Math.floor(Math.random() * (2000 - 700 + 1)) + 700;
   private slices: any[] = [];
 
-constructor(private router: Router, private winnerService: WinnerService){}
+  private xAxisCircle!: number;
+  private yAxisCircle!: number;
+  private radioCircle!: number;
+
+  private rotateSpeed = 0.02; //radianes por unid de tiempo
+  private rotationAngle = 0;
+
+  constructor(private router: Router, private winnerService: WinnerService) { }
+
+  @HostListener('window: resize', ['$event'])
+  onResize() {
+    this.detectScreenWidth();
+  }
+
+  ngOnInit() {
+    this.detectScreenWidth();
+  }
 
   @Input()
   set elements(value: any) {
@@ -38,19 +57,13 @@ constructor(private router: Router, private winnerService: WinnerService){}
     return this._rotationActive;
   }
 
-  rotateSpeed = 0.02; //en radianes
-  rotationAngle = 0;
-
- 
   ngOnChanges(): void {
-    console.log('cambio detectado. Largo de _elements: ', this._elements.length);
-
-    if(this._elements.length > 1){
+    if (this._elements.length > 1) {
       if (this.micanvas) {
         this.ctx = this.micanvas.nativeElement.getContext('2d');
         this.drawTombola();
       }
-    }else{
+    } else {
       this.clearCanvas();
     }
   }
@@ -89,13 +102,9 @@ constructor(private router: Router, private winnerService: WinnerService){}
 
   drawTombola() {
     if (this.ctx && this.elements.length > 0) {
-      const radio = 250;
-      const x = 450;
-      const y = 300;
-
       const numberOfElements = this.elements.length;
-      this.drawSlices(this.ctx, x, y, radio, numberOfElements);
-      this.drawTriangle(this.ctx, x);
+      this.drawSlices(this.ctx, this.xAxisCircle, this.yAxisCircle, this.radioCircle, numberOfElements);
+      this.drawTriangle(this.ctx, this.xAxisCircle);
     }
   }
 
@@ -123,9 +132,7 @@ constructor(private router: Router, private winnerService: WinnerService){}
       this.slices.forEach((slice: { startAngle: any; endAngle: any; color: any }) => {
         cxt.beginPath();
         cxt.moveTo(x, y);
-        // cxt.arc(x, y, radio, slice.startAngle + this.rotationAngle, slice.endAngle + this.rotationAngle);
         cxt.arc(x, y, radio, slice.startAngle + this.rotationAngle - Math.PI / 2, slice.endAngle + this.rotationAngle - Math.PI / 2);
-        // console.log('startSlice', slice.startAngle, 'endSlice', slice.endAngle);
         cxt.fillStyle = slice.color;
         cxt.fill();
         cxt.closePath();
@@ -196,8 +203,37 @@ constructor(private router: Router, private winnerService: WinnerService){}
 
 
   navigateToWinner() {
-    const targetRoute = '/winner';  
+    const targetRoute = '/winner';
     this.router.navigateByUrl(targetRoute);
+  }
+
+  detectScreenWidth():number {
+
+    const width = window.innerWidth;
+
+    if (width <= ScreenWidthEnum.SmallScreen) {
+
+      this.xAxisCircle = 300;
+      this.yAxisCircle = 200;
+      this.radioCircle = 150;
+
+    } else if (width <= ScreenWidthEnum.MediumScreen) {
+
+      this.xAxisCircle = 350;
+      this.yAxisCircle = 240;
+      this.radioCircle = 190;
+
+    } else {
+
+      this.xAxisCircle = 450;
+      this.yAxisCircle = 300;
+      this.radioCircle = 250;
+    }
+
+    this.clearCanvas();
+    this.drawTombola();
+
+    return width;
   }
 
 }

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { WinnerService } from '../winner/winner.service';
+import { ScreenWidthEnum } from '../shared/screen-width-enum';
 
 @Component({
   selector: 'app-elements',
@@ -15,6 +15,8 @@ export class ElementsComponent {
   elementsWinners: any[] = [];
   rotationActive = false;
 
+  smallScreen = false;
+
   constructor(private formBuilder: FormBuilder, public winnerService: WinnerService) {
 
     this.elementsForm = this.formBuilder.group({
@@ -23,8 +25,14 @@ export class ElementsComponent {
 
   }
 
-  ngAfterViewInit(): void {
+  
+  @HostListener('window: resize', ['$event'])
+  onResize() {
+    this.detectScreenWidth();
+  }
 
+  ngOnInit() {
+    this.detectScreenWidth();
   }
 
   addElement() {
@@ -56,7 +64,6 @@ export class ElementsComponent {
    
   }
 
-
   getRandomHexColor(): string {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -78,4 +85,17 @@ export class ElementsComponent {
     this.elementsWinners = [];
     this.winnerService.resetAllElements();
   }
+
+  detectScreenWidth() {
+
+    const width = window.innerWidth;
+
+    if (width <= ScreenWidthEnum.MediumScreen) {
+      this.smallScreen = true;
+    } else {
+      this.smallScreen = false;
+    }
+  }
 }
+
+

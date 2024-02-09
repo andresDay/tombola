@@ -2,25 +2,16 @@
     width: 50%;
 }
 
-/* .table-row{
-    background-color: #ecf1f6;
-} */
-
-/*  
-.table-description{
-    display: inline-block;
-}
-
-.table-btn{
-    width: 10%;
-} */
-
 .tombola{
     position: fixed;
     top:50;
     right: 50;
 }
 
-.custom-btn{
+.custom-btn-sm{
+    width: 150px;
+}
+
+.custom-btn-lg{
     width: 200px;
 }
